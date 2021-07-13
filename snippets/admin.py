@@ -5,4 +5,4 @@ from .models import Language
 
 @admin.register(Language)
 class LanguageAdmin(admin.ModelAdmin):
-    pass
+    prepopulated_fields = {'slug': ('name',)}
