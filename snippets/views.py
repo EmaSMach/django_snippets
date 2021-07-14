@@ -1,8 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
@@ -14,14 +14,6 @@ from pygments.formatters import HtmlFormatter
 from .models import Snippet, Language
 
 
-# def login(request):
-#     return render(request, 'login.html', {})
-
-
-# def logout(request):
-#     return render(request, 'login.html', {})
-
-
 class IndexSnippetListView(ListView):
     model = Snippet
     template_name = "index.html"
@@ -30,15 +22,11 @@ class IndexSnippetListView(ListView):
         qs = super().get_queryset().filter(public=True)
         return qs
 
-# def index(request):
-#     return render(request, 'index.html', {})
 
 class SnippetByLanguageDetailView(DetailView):
     model = Language
     template_name = "snippets/language_snippets.html"
 
-# def language(request):
-#     return render(request, 'index.html', {})
 
 class SnippetByUserListView(ListView):
     model = Snippet
@@ -51,8 +39,10 @@ class SnippetByUserListView(ListView):
             qs = qs.exclude(public=False)
         return qs
 
-# def user_snippets(request):
-#     return render(request, 'snippets/user_snippets.html', {})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['snippets_creator'] = self.kwargs['username']
+        return context
 
 
 class SnippetDetailView(DetailView):
@@ -64,12 +54,11 @@ class SnippetDetailView(DetailView):
         lang = context['object'].language.name
         lexer = get_lexer_by_name(lang, stripall=True)
         formatter = HtmlFormatter(full=True, linenos=True, cssclass="source")
-        formatted_snippet = highlight(context['object'].snippet, lexer, formatter)
+        formatted_snippet = highlight(
+            context['object'].snippet, lexer, formatter)
         context['formatted_snippet'] = formatted_snippet
         return context
 
-# def snippet(request):
-#     return render(request, 'snippets/snippet.html', {})
 
 @method_decorator(login_required, name='dispatch')
 class SnippetCreateView(CreateView):
@@ -81,11 +70,8 @@ class SnippetCreateView(CreateView):
     def form_valid(self, form):
         if form.is_valid():
             form.instance.user = self.request.user
-            # form.save()
         return super().form_valid(form)
 
-# def snippet_add(request):
-    # return render(request, 'snippets/snippet_add.html', {})
 
 @method_decorator(login_required, name='dispatch')
 class SnippetUpdateView(UserPassesTestMixin, UpdateView):
@@ -102,11 +88,7 @@ class SnippetUpdateView(UserPassesTestMixin, UpdateView):
     def test_func(self):
         snippet_user = self.get_object().user
         return snippet_user == self.request.user
-            # return True
-        # return False
 
-# def snippet_edit(request):
-#     return render(request, 'snippets/snippet_add.html', {})
 
 @method_decorator(login_required, name='dispatch')
 class SnippetDeleteView(UserPassesTestMixin, DeleteView):
@@ -119,6 +101,3 @@ class SnippetDeleteView(UserPassesTestMixin, DeleteView):
         if snippet_user == self.request.user:
             return True
         return False
-
-# def snippet_delete(request):
-#     return render(request, 'snippets/user_snippets.html', {})

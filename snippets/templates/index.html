@@ -5,9 +5,9 @@
         <h1>Snippets</h1>
         <br>
         {% for snippet in object_list %}
-        {% include "snippets/snippet_summary.html" with snippet=snippet %}
+            {% include "snippets/snippet_summary.html" with snippet=snippet %}
         {% empty %}
-        <p>Aún no hay snippets</p>
+            <p>Aún no hay snippets</p>
         {% endfor %}
   </div>
 </div>

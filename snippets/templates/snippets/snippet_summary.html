@@ -1,5 +1,5 @@
 <div class="card">
-    <h5 class="card-header">{{ snippet.name }}{% if snippet.public is False %}<span class="badge badge-warning">Privado</span>{% endif %}<a href="{% url 'user_snippets' snippet.user.username%}"  class="float-right"><small>{{ snippet.user }}</small></a></h5>
+    <h5 class="card-header">{{ snippet.name }} {% if snippet.public is False %}<span class="badge badge-warning">Privado</span>{% endif %}<a href="{% url 'user_snippets' snippet.user.username%}"  class="float-right"><small>{{ snippet.user }}</small></a></h5>
     <div class="card-body">
         <a href="{% url 'language' snippet.language.slug %}"><h5 class="card-title">{{ snippet.name }}</h5></a> 
         <h6 class="card-subtitle mb-2 text-muted">Creado: {{ snippet.created|timesince }}</h6>
