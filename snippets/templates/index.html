@@ -5,24 +5,28 @@
         <h1>Snippets</h1>
         <br>
         <!-- SNIPPET -->
+        {% for snippet in object_list %}
         <div class="card">
-            <h5 class="card-header">Mi primer snippet <a href="{% url 'user_snippets' %}"  class="float-right"><small>juancito</small></a></h5>
+            <h5 class="card-header">Mi primer snippet <a href="{% url 'user_snippets' %}"  class="float-right"><small>{{ snippet.user }}</small></a></h5>
             <div class="card-body">
-                <a href="{% url 'language' %}"><h5 class="card-title">Python</h5></a> 
-                <h6 class="card-subtitle mb-2 text-muted">Creado: 1 dia</h6>
-                <p class="card-text">Ejemplo de clases en python</p>
+                <a href="{% url 'language' %}"><h5 class="card-title">{{ snippet.name }}</h5></a> 
+                <h6 class="card-subtitle mb-2 text-muted">Creado: {{ snippet.created|timesince }}</h6>
+                <p class="card-text">{{ snippet.description }}</p>
                 <hr>
-                <a href="{% url 'snippet' %}" class="btn btn-primary">Ver</a>
-                <a href="{% url 'snippet_edit' %}" class="btn btn-info">Editar</a>
-                <a href="{% url 'snippet_delete' %}" class="btn btn-danger">Eliminar</a> 
+                <a href="{% url 'snippet' snippet.pk %}" class="btn btn-primary">Ver</a>
+                {% comment %} <a href="{% url 'snippet_edit' %}" class="btn btn-info">Editar</a>
+                <a href="{% url 'snippet_delete' %}" class="btn btn-danger">Eliminar</a>  {% endcomment %}
             </div>
         </div>
         <br>
+        {% empty %}
+        <p>Aún no hay snippets</p>
+        {% endfor %}
         <!-- FIN SNIPPET -->
 
 
         <!-- SNIPPET -->
-        <div class="card">
+        {% comment %} <div class="card">
             <h5 class="card-header">Java snippet <a href="{% url 'user_snippets' %}"  class="float-right"><small>user1</small></a></h5>
             <div class="card-body">
                 <a href="{% url 'language' %}"><h5 class="card-title">Java</h5></a> 
@@ -34,11 +38,11 @@
                 <a href="{% url 'snippet_delete' %}" class="btn btn-danger">Eliminar</a> 
             </div>
         </div>
-        <br>
+        <br> {% endcomment %}
         <!-- FIN SNIPPET -->
 
         <!-- SNIPPET -->
-        <div class="card">
+        {% comment %} <div class="card">
             <h5 class="card-header">asdedfews <a href="{% url 'user_snippets' %}"  class="float-right"><small>user1</small></a></h5>
             <div class="card-body">
                 <a href="{% url 'language' %}"><h5 class="card-title">Javascript</h5></a> 
@@ -50,7 +54,7 @@
                 <a href="{% url 'snippet_delete' %}" class="btn btn-danger">Eliminar</a>
             </div>
         </div>
-        <br>
+        <br> {% endcomment %}
         <!-- FIN SNIPPET -->
   </div>
 </div>

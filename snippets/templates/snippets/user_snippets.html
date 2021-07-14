@@ -6,7 +6,7 @@
         <br>
         
         <!-- SNIPPET -->
-        <div class="card">
+        {% comment %} <div class="card">
             <h5 class="card-header">Mi primer snippet <a href="{% url 'user_snippets' %}"  class="float-right"><small>juancito</small></a></h5>
             <div class="card-body">
                 <a href="{% url 'language' %}"><h5 class="card-title">Python</h5></a> 
@@ -18,11 +18,11 @@
                 <a href="{% url 'snippet_delete' %}" class="btn btn-danger">Eliminar</a>
             </div>
         </div>
-        <br>
+        <br> {% endcomment %}
         <!-- FIN SNIPPET -->
 
         <!-- SNIPPET -->
-        <div class="card">
+        {% comment %} <div class="card">
             <h5 class="card-header">Snippet secreto <span class="badge badge-warning">Privado</span> <a href="{% url 'user_snippets' %}"  class="float-right"><small>juancito</small></a></h5>
             <div class="card-body">
                 <a href="{% url 'language' %}"><h5 class="card-title">Python</h5></a> 
@@ -34,7 +34,7 @@
                 <a href="{% url 'snippet_delete' %}" class="btn btn-danger">Eliminar</a>
             </div>
         </div>
-        <br>
+        <br> {% endcomment %}
         <!-- FIN SNIPPET -->
 
   </div>

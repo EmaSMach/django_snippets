@@ -1,10 +1,13 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="row justify-content-md-center">
   <div class="col-md-6">
     <br>
-    <form>
-      <div class="form-group">
+    <form action='.' method='POST'>
+    {% csrf_token %}
+    {{ form|crispy }}
+      {% comment %} <div class="form-group">
         <label for="exampleInputPassword1">Nombre</label>
         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Nombre del Snippet">
       </div>
@@ -32,8 +35,9 @@
       <div class="form-group">
         <label for="exampleInputEmail1">Snippet</label>
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary">Crear</button>
+      </div> {% endcomment %}
+      <button type="submit" class="btn btn-primary">{{ button_text|default:'Crear' }}</button>
+      <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
     </form>
   </div>
 </div>

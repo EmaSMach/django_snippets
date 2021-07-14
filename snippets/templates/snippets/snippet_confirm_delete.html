@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+        <h1>Snippets: Confirmar Borrado</h1>
+        <br>
+        <form method="post">
+        {% csrf_token %}
+            <p>¿Desea borrar el snippet "{{ object }}"?</p>
+            <input type="submit" class="btn btn-danger" value="Confirmar">
+            <a href="javascript:history.back()" class="btn btn-primary">Cancelar</a>
+        </form>
+  </div>
+</div>
+{% endblock %}
