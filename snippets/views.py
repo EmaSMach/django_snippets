@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import ListView
-from django.views.generic import DetailView
+from django.views.generic import ListView, DetailView
 from django.views.generic import CreateView, UpdateView, DeleteView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 
 from pygments import highlight
@@ -11,12 +13,12 @@ from pygments.formatters import HtmlFormatter
 from .models import Snippet
 
 
-def login(request):
-    return render(request, 'login.html', {})
+# def login(request):
+#     return render(request, 'login.html', {})
 
 
-def logout(request):
-    return render(request, 'login.html', {})
+# def logout(request):
+#     return render(request, 'login.html', {})
 
 
 class IndexSnippetListView(ListView):
@@ -25,13 +27,14 @@ class IndexSnippetListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset().filter(public=True)
-        if self.request.user.is_authenticated:
-            qs = qs.all()
         return qs
 
 # def index(request):
 #     return render(request, 'index.html', {})
 
+class SnippetByLanguageListView(ListView):
+    model = Snippet
+    template_name = ".html"
 
 def language(request):
     return render(request, 'index.html', {})
@@ -57,21 +60,27 @@ class SnippetDetailView(DetailView):
 # def snippet(request):
 #     return render(request, 'snippets/snippet.html', {})
 
+@method_decorator(login_required, name='dispatch')
 class SnippetCreateView(CreateView):
     model = Snippet
     template_name = "snippets/snippet_add.html"
-    fields = '__all__'
-    exclude = ['user',]
+    fields = ('name', 'description', 'snippet', 'public', 'language',)
     success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            form.instance.user = self.request.user
+            # form.save()
+        return super().form_valid(form)
 
 # def snippet_add(request):
     # return render(request, 'snippets/snippet_add.html', {})
 
-
-class SnippetUpdateView(UpdateView):
+@method_decorator(login_required, name='dispatch')
+class SnippetUpdateView(UserPassesTestMixin, UpdateView):
     model = Snippet
     template_name = "snippets/snippet_add.html"
-    fields = '__all__'
+    fields = ('name', 'description', 'snippet', 'public', 'language',)
     success_url = reverse_lazy('index')
 
     def get_context_data(self, **kwargs):
@@ -79,13 +88,26 @@ class SnippetUpdateView(UpdateView):
         context['button_text'] = 'Guardar cambios'
         return context
 
+    def test_func(self):
+        snippet_user = self.get_object().user
+        return snippet_user == self.request.user
+            # return True
+        # return False
+
 # def snippet_edit(request):
 #     return render(request, 'snippets/snippet_add.html', {})
 
-class SnippetDeleteView(DeleteView):
+@method_decorator(login_required, name='dispatch')
+class SnippetDeleteView(UserPassesTestMixin, DeleteView):
     model = Snippet
     template_name = "snippets/snippet_confirm_delete.html"
     success_url = reverse_lazy('user_snippets')
+
+    def test_func(self):
+        snippet_user = self.get_object().user
+        if snippet_user == self.request.user:
+            return True
+        return False
 
 # def snippet_delete(request):
 #     return render(request, 'snippets/user_snippets.html', {})
