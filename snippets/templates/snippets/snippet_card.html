@@ -7,10 +7,9 @@
         <a href="{% url 'language' object.language.slug %}"><h5 class="card-title">{{ object.language }}</h5></a> 
         <h6 class="card-subtitle mb-2 text-muted">Creado: {{ object.created|timesince }}</h6>
         <p class="card-text">{{ object.description }}</p>
-        <div style="background-color:lightgray;border-radius: 5px;">
+        <div style="background-color:lightgray;border-radius: 5px;" class="overflow-auto">
           <!-- Código del Snippet -->
           {{ formatted_snippet|safe }}
-          <!-- Código del Snippet -->
         </div>
         {% if user.is_authenticated and user == object.user %}
         <hr>
