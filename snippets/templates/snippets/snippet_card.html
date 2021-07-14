@@ -2,7 +2,7 @@
   <div class="col-md-8">
     <br>
     <div class="card">
-      <h5 class="card-header">Nombre del Snippet <a href="{% url 'user_snippets' object.user.username %}"  class="float-right"><small>{{ object.user }}</small></a></h5>
+      <h5 class="card-header">{{ object.name }} <a href="{% url 'user_snippets' object.user.username %}"  class="float-right"><small>{{ object.user }}</small></a></h5>
       <div class="card-body">
         <a href="{% url 'language' object.language.slug %}"><h5 class="card-title">{{ object.language }}</h5></a> 
         <h6 class="card-subtitle mb-2 text-muted">Creado: {{ object.created|timesince }}</h6>
