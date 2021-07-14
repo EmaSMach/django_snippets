@@ -1,16 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.contrib.auth.models import User
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
-from .models import Snippet
+from .models import Snippet, Language
 
 
 # def login(request):
@@ -32,16 +33,26 @@ class IndexSnippetListView(ListView):
 # def index(request):
 #     return render(request, 'index.html', {})
 
-class SnippetByLanguageListView(ListView):
+class SnippetByLanguageDetailView(DetailView):
+    model = Language
+    template_name = "snippets/language_snippets.html"
+
+# def language(request):
+#     return render(request, 'index.html', {})
+
+class SnippetByUserListView(ListView):
     model = Snippet
-    template_name = ".html"
+    template_name = "snippets/user_snippets.html"
 
-def language(request):
-    return render(request, 'index.html', {})
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs['username'])
+        qs = super().get_queryset().filter(user=user)
+        if self.request.user != user:
+            qs = qs.exclude(public=False)
+        return qs
 
-
-def user_snippets(request):
-    return render(request, 'snippets/user_snippets.html', {})
+# def user_snippets(request):
+#     return render(request, 'snippets/user_snippets.html', {})
 
 
 class SnippetDetailView(DetailView):

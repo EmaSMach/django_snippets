@@ -2,28 +2,5 @@
 {% block content %}
 
 {% include "snippets/snippet_card.html" with object=object %}
-{% comment %} <div class="row justify-content-md-center">
-  <div class="col-md-8">
-    <br>
-    <div class="card">
-      <h5 class="card-header">Nombre del Snippet <a href="{% url 'user_snippets' %}"  class="float-right"><small>{{ object.user }}</small></a></h5>
-      <div class="card-body">
-        <a href="{% url 'language' %}"><h5 class="card-title">{{ object.language }}</h5></a> 
-        <h6 class="card-subtitle mb-2 text-muted">Creado: {{ object.created|timesince }}</h6>
-        <p class="card-text">{{ object.description }}</p>
-        <div style="background-color:lightgray;border-radius: 5px;">
-          <!-- Código del Snippet -->
-          {{ formatted_snippet|safe }}
-          <!-- Código del Snippet -->
-        </div>
-        {% if user.is_authenticated and user == object.user %}
-        <hr>
-        <br>
-        <a href="{% url 'snippet_edit' object.pk %}" class="btn btn-info">Editar</a>
-        <a href="{% url 'snippet_delete' object.pk %}" class="btn btn-danger">Eliminar</a>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</div> {% endcomment %}
+
 {% endblock %}

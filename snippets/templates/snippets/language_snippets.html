@@ -2,18 +2,14 @@
 {% block content %}
 <div class="row justify-content-md-center">
     <div class="col-md-8">
-        <h1>Snippets: {{ request.GET.user.username }}</h1>
-        {% for k, v in request.GET.items %}
-        {{ k }}  {{ v }}
-        {% endfor %}
+        <h1>Snippets: {{ object.name }}</h1>
         <br>
-
-        {% for snippet in object_list %}
+        
+        {% for snippet in object.snippets.all %}
         {% include "snippets/snippet_summary.html" with snippet=snippet %}
         {% empty %}
         <p>Aún no hay snippets</p>
         {% endfor %}
-        
         <!-- SNIPPET -->
         {% comment %} <div class="card">
             <h5 class="card-header">Mi primer snippet <a href="{% url 'user_snippets' %}"  class="float-right"><small>juancito</small></a></h5>
