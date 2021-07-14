@@ -94,7 +94,9 @@ class SnippetUpdateView(UserPassesTestMixin, UpdateView):
 class SnippetDeleteView(UserPassesTestMixin, DeleteView):
     model = Snippet
     template_name = "snippets/snippet_confirm_delete.html"
-    success_url = reverse_lazy('user_snippets')
+    
+    def get_success_url(self):
+        return reverse_lazy('user_snippets', kwargs={'username': self.request.user.username})
 
     def test_func(self):
         snippet_user = self.get_object().user
